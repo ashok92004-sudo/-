@@ -155,6 +155,7 @@
       line-height: 1.75;
       color: #7b4b47;
       font-size: 1rem;
+      white-space: pre-line;
     }
 
     .open-btn,
@@ -278,6 +279,7 @@
       text-align: center;
       line-height: 1.65;
       font-size: 0.98rem;
+      white-space: pre-line;
     }
 
     .message-card:hover,
@@ -355,6 +357,11 @@
       filter: drop-shadow(0 0 10px rgba(255,127,115,0.5));
     }
 
+    .flower-hit .click-target {
+      fill: transparent;
+      pointer-events: all;
+    }
+
     .section {
       margin-top: 36px;
       border-radius: 28px;
@@ -370,6 +377,7 @@
     .section p {
       margin: 0;
       line-height: 1.7;
+      white-space: pre-line;
     }
 
     .flower-section { transition-delay: 0.2s; }
@@ -422,6 +430,7 @@
     .song {
       border-radius: 20px;
       padding: 18px;
+      white-space: pre-line;
     }
 
     .memory-step,
@@ -443,6 +452,7 @@
       color: #7a5568;
       line-height: 1.6;
       font-size: 0.96rem;
+      white-space: pre-line;
     }
 
     .letter-paper {
@@ -648,6 +658,7 @@ it would be something soft i think.
 Not loud, not forced, not complicated...
 just the kind of presence that slowly and gradually becomes important
 before I even realizes what was happening">
+              <circle class="click-target" cx="110" cy="170" r="38"></circle>
               <g transform="translate(110 170)">
                 <circle r="13" fill="#ffd166"/>
                 <ellipse rx="14" ry="26" fill="#ff9f91" transform="rotate(0) translate(0 -24)"/>
@@ -672,6 +683,7 @@ Important.
 Constant.
 
 Which is honestly both sweet and a little suspicious mmmm.">
+              <circle class="click-target" cx="150" cy="130" r="38"></circle>
               <g transform="translate(150 130)">
                 <circle r="12" fill="#ffd166"/>
                 <ellipse rx="13" ry="24" fill="#ffd1c9" transform="rotate(0) translate(0 -22)"/>
@@ -692,6 +704,7 @@ not by forcing anything—
 just by being there,
 reminding me of what I’m capable of
 when I start forgetting it.">
+              <circle class="click-target" cx="200" cy="120" r="40"></circle>
               <g transform="translate(200 120)">
                 <circle r="11" fill="#ffe08a"/>
                 <ellipse rx="16" ry="28" fill="#ff7f73" transform="rotate(0) translate(0 -22)"/>
@@ -721,6 +734,7 @@ I don’t know when,
 I don’t know how,
 but the fact that we even have plans like this—
 it makes everything feel a little more real.">
+              <circle class="click-target" cx="250" cy="135" r="38"></circle>
               <g transform="translate(250 135)">
                 <circle r="12" fill="#f4a261"/>
                 <ellipse rx="13" ry="25" fill="#fff1d8" transform="rotate(0) translate(0 -23)"/>
@@ -740,6 +754,7 @@ you are still one of the people I am most grateful to have found.
 
 And maybe that is enough.
 Maybe more than enough.">
+              <circle class="click-target" cx="295" cy="175" r="38"></circle>
               <g transform="translate(295 175)">
                 <circle r="11" fill="#ffd166"/>
                 <ellipse rx="12" ry="22" fill="#ffc5bb" transform="rotate(0) translate(0 -20)"/>
@@ -857,17 +872,209 @@ still a betrayal, but a cute one.</div>
       </div>
     </section>
 
-   
-
     <section class="section letter-section">
       <h2>My letter to you</h2>
-      <p>about that ‘what could’ve been’ thing…<p>
+      <p>about that ‘what could’ve been’ thing…</p>
       <div class="letter-paper">
         <div class="letter-top">
           <span>To: Shariya</span>
           <span>From: Achu</span>
         </div>
-        <div class="letter-body" id="typedLetter" data-letter="hey,
+        <div class="letter-body" id="typedLetter"></div>
+        <div class="signature">With affection, Achu</div>
+      </div>
+    </section>
+
+    <section class="section playlist-section">
+      <h2>Our playlist corner</h2>
+      <p>Upload your three MP3 files to the same GitHub repository and keep their names exactly as song1.mp3, song2.mp3, and song3.mp3 unless you edit the filenames below.</p>
+      <div class="playlist">
+        <div class="song" data-file="song1.mp3">
+          <div class="song-title">Hey There Delilah — Plain White T’s</div>
+          <div class="song-note">I remember you asking me to play this on guitar so many times 😭.
+
+this one just reminds me of those moments. simple, random, but nice.</div>
+          <button onclick="playSong('song1.mp3', this)">▶ Play Song 1</button>
+        </div>
+        <div class="song" data-file="song2.mp3">
+          <div class="song-title">Paradise — Coldplay</div>
+          <div class="song-note">i genuinely can’t think of a more fitting song for you.</div>
+          <button onclick="playSong('song2.mp3', this)">▶ Play Song 2</button>
+        </div>
+        <div class="song" data-file="song3.mp3">
+          <div class="song-title">Slow Dancing in a Burning Room — John Mayer</div>
+          <div class="song-note">still waiting for a proper thank you
+for introducing you to john mayer btw.
+
+but yeah… this song just had to be here.</div>
+          <button onclick="playSong('song3.mp3', this)">▶ Play Song 3</button>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="pauseBtn">⏸ Pause</button>
+        <button id="resumeBtn">▶ Resume</button>
+        <span class="now-playing" id="nowPlaying">No song playing yet</span>
+      </div>
+      <audio id="player"></audio>
+    </section>
+
+    <section class="section final-section">
+      <h2>And finally...</h2>
+      <p>i guess there’s just one last thing i wanted to say.</p>
+      <div class="final-box">
+        <p>I don’t really know how to wrap all of this up properly.
+
+it’s just…
+this year, everything we’ve talked about,
+all the random moments, the stupid jokes, the serious ones too—
+it all ended up meaning more than i expected.
+
+and you did too.
+
+i’m glad we met.
+even if it started in the most random way possible.
+
+i’m glad we stayed.
+through everything.
+
+and i’m glad that out of all the ways this could’ve gone,
+this is what we ended up being.
+
+so yeah…
+that’s it i guess.
+
+just… thank you for being you.]</p>
+        <div style="margin-top:16px;">
+          <button class="final-btn" id="finalBtn">One last flower 🌷</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">I seriosuly hope you like this</p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const petals = document.getElementById('petals');
+      if (petals) {
+        for (let i = 0; i < 24; i++) {
+          const petal = document.createElement('div');
+          petal.className = 'petal';
+          petal.style.left = Math.random() * 100 + 'vw';
+          petal.style.animationDuration = 8 + Math.random() * 8 + 's';
+          petal.style.animationDelay = Math.random() * 6 + 's';
+          petal.style.opacity = 0.4 + Math.random() * 0.5;
+          petal.style.transform = `scale(${0.7 + Math.random()})`;
+          petals.appendChild(petal);
+        }
+      }
+
+      const cursorGlow = document.getElementById('cursorGlow');
+      window.addEventListener('mousemove', (e) => {
+        if (cursorGlow) {
+          cursorGlow.style.left = e.clientX + 'px';
+          cursorGlow.style.top = e.clientY + 'px';
+        }
+      });
+
+      const introScreen = document.getElementById('introScreen');
+      const openSurpriseBtn = document.getElementById('openSurpriseBtn');
+      if (openSurpriseBtn && introScreen) {
+        openSurpriseBtn.addEventListener('click', () => {
+          introScreen.classList.add('hidden');
+          document.body.classList.add('page-ready');
+        });
+      }
+
+      const player = document.getElementById('player');
+      const nowPlaying = document.getElementById('nowPlaying');
+      const pauseBtn = document.getElementById('pauseBtn');
+      const resumeBtn = document.getElementById('resumeBtn');
+      const songCards = document.querySelectorAll('.song');
+
+      function clearActive() {
+        songCards.forEach(card => card.classList.remove('active'));
+      }
+
+      window.playSong = async function(file, button) {
+        try {
+          if (!player) return;
+          player.src = file;
+          await player.play();
+          clearActive();
+          const card = button ? button.closest('.song') : null;
+          if (card) card.classList.add('active');
+          const title = card ? card.querySelector('.song-title').textContent : file;
+          if (nowPlaying) nowPlaying.textContent = 'Now playing: ' + title;
+        } catch (e) {
+          alert('Could not play ' + file + '. Make sure the MP3 file is uploaded to your repo and the filename matches exactly.');
+          console.error(e);
+        }
+      };
+
+      if (pauseBtn && player) {
+        pauseBtn.addEventListener('click', () => {
+          player.pause();
+          if (nowPlaying) nowPlaying.textContent = 'Paused';
+        });
+      }
+
+      if (resumeBtn && player) {
+        resumeBtn.addEventListener('click', async () => {
+          try {
+            await player.play();
+            if (player.src && nowPlaying) {
+              const active = document.querySelector('.song.active .song-title');
+              nowPlaying.textContent = active ? 'Now playing: ' + active.textContent : 'Music resumed';
+            }
+          } catch (e) {
+            alert('Pick a song first.');
+          }
+        });
+      }
+
+      if (player) {
+        player.addEventListener('ended', () => {
+          clearActive();
+          if (nowPlaying) nowPlaying.textContent = 'No song playing right now';
+        });
+      }
+
+      const flowerHits = document.querySelectorAll('.flower-hit');
+      const flowerNoteTitle = document.getElementById('flowerNoteTitle');
+      const flowerNoteText = document.getElementById('flowerNoteText');
+      const flowerSection = document.querySelector('.flower-section');
+
+      flowerHits.forEach(flower => {
+        flower.addEventListener('click', () => {
+          flowerHits.forEach(item => item.classList.remove('active'));
+          flower.classList.add('active');
+          if (flowerNoteTitle) flowerNoteTitle.textContent = flower.dataset.title || '';
+          if (flowerNoteText) flowerNoteText.textContent = flower.dataset.message || '';
+          if (flowerSection) {
+            flowerSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center'
+            });
+          }
+        });
+      });
+
+      const typedLetter = document.getElementById('typedLetter');
+      let typedStarted = false;
+
+      function typeLetter(text, element, speed = 22) {
+        let index = 0;
+        element.textContent = '';
+        const timer = setInterval(() => {
+          element.textContent += text.charAt(index);
+          index++;
+          if (index >= text.length) clearInterval(timer);
+        }, speed);
+      }
+
+      if (typedLetter) {
+        const fullLetter = `hey,
 
 this isn’t anything new.
 we’ve already talked about this,
@@ -906,210 +1113,48 @@ it mattered.
 
 and we still chose this.
 
-and i’m really glad we did."></div>
-        <div class="signature">With affection, Achu</div>
-      </div>
-    </section>
+and i’m really glad we did.`;
 
-    <section class="section playlist-section">
-      <h2>Our playlist corner</h2>
-      <p>Upload your three MP3 files to the same GitHub repository and keep their names exactly as song1.mp3, song2.mp3, and song3.mp3 unless you edit the filenames below.</p>
-      <div class="playlist">
-        <div class="song" data-file="song1.mp3">
-          <div class="song-title">Hey There Delilah — Plain White T’s</div>
-          <div class="song-note">I remember you asking me to play this on guitar so many times 😭.
+        const letterObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !typedStarted) {
+              typedStarted = true;
+              typeLetter(fullLetter, typedLetter);
+            }
+          });
+        }, { threshold: 0.35 });
 
-this one just reminds me of those moments. simple, random, but nice.</div>
-          <button onclick="playSong('song1.mp3', this)">▶ Play Song 1</button>
-        </div>
-        <div class="song" data-file="song2.mp3">
-          <div class="song-title">Paradise — Coldplay</div>
-          <div class="song-note">i genuinely can’t think of a more fitting song for you.</div>
-          <button onclick="playSong('song2.mp3', this)">▶ Play Song 2</button>
-        </div>
-        <div class="song" data-file="song3.mp3">
-          <div class="song-title">Slow Dancing in a Burning Room — John Mayer</div>
-          <div class="song-note">still waiting for a proper thank you
-for introducing you to john mayer btw.
-
-but yeah… this song just had to be here.</div>
-          <button onclick="playSong('song3.mp3', this)">▶ Play Song 3</button>
-        </div>
-      </div>
-      <div class="controls">
-        <button id="pauseBtn">⏸ Pause</button>
-        <button id="resumeBtn">▶ Resume</button>
-        <span class="now-playing" id="nowPlaying">No song playing yet</span>
-      </div>
-      <audio id="player"></audio>
-    </section>
-
-  
-
-    <section class="section final-section">
-      <h2>And finally...</h2>
-      <p>i guess there’s just one last thing i wanted to say.</p>
-      <div class="final-box">
-        <p>I don’t really know how to wrap all of this up properly.
-
-it’s just…
-this year, everything we’ve talked about,
-all the random moments, the stupid jokes, the serious ones too—
-it all ended up meaning more than i expected.
-
-and you did too.
-
-i’m glad we met.
-even if it started in the most random way possible.
-
-i’m glad we stayed.
-through everything.
-
-and i’m glad that out of all the ways this could’ve gone,
-this is what we ended up being.
-
-so yeah…
-that’s it i guess.
-
-just… thank you for being you.]</p>
-        <div style="margin-top:16px;">
-          <button class="final-btn" id="finalBtn">One last flower 🌷</button>
-        </div>
-      </div>
-    </section>
-
-    <p class="footer-note">I seriosuly hope you like this</p>
-  </div>
-
-  <script>
-    const petals = document.getElementById('petals');
-    for (let i = 0; i < 24; i++) {
-      const petal = document.createElement('div');
-      petal.className = 'petal';
-      petal.style.left = Math.random() * 100 + 'vw';
-      petal.style.animationDuration = 8 + Math.random() * 8 + 's';
-      petal.style.animationDelay = Math.random() * 6 + 's';
-      petal.style.opacity = 0.4 + Math.random() * 0.5;
-      petal.style.transform = `scale(${0.7 + Math.random()})`;
-      petals.appendChild(petal);
-    }
-
-    const cursorGlow = document.getElementById('cursorGlow');
-    window.addEventListener('mousemove', (e) => {
-      cursorGlow.style.left = e.clientX + 'px';
-      cursorGlow.style.top = e.clientY + 'px';
-    });
-
-    const introScreen = document.getElementById('introScreen');
-    const openSurpriseBtn = document.getElementById('openSurpriseBtn');
-    openSurpriseBtn.addEventListener('click', () => {
-      introScreen.classList.add('hidden');
-      document.body.classList.add('page-ready');
-    });
-
-    const player = document.getElementById('player');
-    const nowPlaying = document.getElementById('nowPlaying');
-    const pauseBtn = document.getElementById('pauseBtn');
-    const resumeBtn = document.getElementById('resumeBtn');
-    const songCards = document.querySelectorAll('.song');
-
-    function clearActive() {
-      songCards.forEach(card => card.classList.remove('active'));
-    }
-
-    async function playSong(file, button) {
-      try {
-        player.src = file;
-        await player.play();
-        clearActive();
-        const card = button.closest('.song');
-        if (card) card.classList.add('active');
-        const title = card ? card.querySelector('.song-title').textContent : file;
-        nowPlaying.textContent = 'Now playing: ' + title;
-      } catch (e) {
-        alert('Could not play ' + file + '. Make sure the MP3 file is uploaded to your repo and the filename matches exactly.');
+        letterObserver.observe(typedLetter);
       }
-    }
 
-    pauseBtn.addEventListener('click', () => {
-      player.pause();
-      nowPlaying.textContent = 'Paused';
-    });
-
-    resumeBtn.addEventListener('click', async () => {
-      try {
-        await player.play();
-        if (player.src) {
-          const active = document.querySelector('.song.active .song-title');
-          nowPlaying.textContent = active ? 'Now playing: ' + active.textContent : 'Music resumed';
-        }
-      } catch (e) {
-        alert('Pick a song first.');
+      const revealBtn = document.getElementById('revealBtn');
+      const revealCard = document.getElementById('revealCard');
+      if (revealBtn && revealCard) {
+        revealBtn.addEventListener('click', () => {
+          revealCard.classList.toggle('show');
+          revealBtn.textContent = revealCard.classList.contains('show')
+            ? 'Hide the note ✨'
+            : 'Click for the hidden note 💌';
+        });
       }
-    });
 
-    player.addEventListener('ended', () => {
-      clearActive();
-      nowPlaying.textContent = 'No song playing right now';
-    });
+      const finalBtn = document.getElementById('finalBtn');
+      const endingScreen = document.getElementById('endingScreen');
+      const endingCloseBtn = document.getElementById('endingCloseBtn');
 
-    const revealBtn = document.getElementById('revealBtn');
-    const revealCard = document.getElementById('revealCard');
-    revealBtn.addEventListener('click', () => {
-      revealCard.classList.toggle('show');
-      revealBtn.textContent = revealCard.classList.contains('show') ? 'Hide the note ✨' : 'Click for the hidden note 💌';
-    });
+      if (finalBtn && endingScreen) {
+        finalBtn.addEventListener('click', () => {
+          endingScreen.classList.remove('hidden');
+          document.body.classList.add('ending-mode');
+        });
+      }
 
-    const flowerHits = document.querySelectorAll('.flower-hit');
-    const flowerNoteTitle = document.getElementById('flowerNoteTitle');
-    const flowerNoteText = document.getElementById('flowerNoteText');
-
-    flowerHits.forEach(flower => {
-      flower.addEventListener('click', () => {
-        flowerHits.forEach(item => item.classList.remove('active'));
-        flower.classList.add('active');
-        flowerNoteTitle.textContent = flower.dataset.title;
-        flowerNoteText.textContent = flower.dataset.message;
-      });
-    });
-
-    const typedLetter = document.getElementById('typedLetter');
-    const fullLetter = typedLetter.dataset.letter || '';
-    let typedStarted = false;
-
-    function typeLetter(text, element, speed = 22) {
-      let index = 0;
-      element.textContent = '';
-      const timer = setInterval(() => {
-        element.textContent += text.charAt(index);
-        index++;
-        if (index >= text.length) clearInterval(timer);
-      }, speed);
-    }
-
-    const letterObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !typedStarted) {
-          typedStarted = true;
-          typeLetter(fullLetter, typedLetter);
-        }
-      });
-    }, { threshold: 0.35 });
-
-    letterObserver.observe(typedLetter);
-
-    const finalBtn = document.getElementById('finalBtn');
-    const endingScreen = document.getElementById('endingScreen');
-    const endingCloseBtn = document.getElementById('endingCloseBtn');
-
-    finalBtn.addEventListener('click', () => {
-      endingScreen.classList.remove('hidden');
-      document.body.classList.add('ending-mode');
-    });
-
-    endingCloseBtn.addEventListener('click', () => {
-      endingScreen.classList.add('hidden');
-      document.body.classList.remove('ending-mode');
+      if (endingCloseBtn && endingScreen) {
+        endingCloseBtn.addEventListener('click', () => {
+          endingScreen.classList.add('hidden');
+          document.body.classList.remove('ending-mode');
+        });
+      }
     });
   </script>
 </body>
