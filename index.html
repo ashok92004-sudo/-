@@ -13,9 +13,9 @@
       --coral3: #ff7f73;
       --deep: #8f4a45;
       --gold: #ffd6a5;
-      --card: rgba(255,255,255,0.78);
+      --card: rgba(255,255,255,0.8);
       --shadow: 0 10px 30px rgba(255, 127, 115, 0.18);
-      --border: rgba(255,255,255,0.82);
+      --border: rgba(255,255,255,0.84);
     }
 
     * { box-sizing: border-box; }
@@ -31,6 +31,10 @@
         radial-gradient(circle at top right, #fff2cf 0%, transparent 20%),
         linear-gradient(135deg, var(--bg1), var(--bg2));
       overflow-x: hidden;
+    }
+
+    body.ending-mode {
+      overflow: hidden;
     }
 
     .floating-petals {
@@ -52,20 +56,30 @@
       animation: fall linear infinite;
     }
 
+    body.ending-mode .petal {
+      animation-duration: 5s !important;
+    }
+
+    .cursor-glow {
+      position: fixed;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255,180,168,0.2), transparent 65%);
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      mix-blend-mode: screen;
+    }
+
     @keyframes fall {
       0% { transform: translateY(-10vh) rotate(0deg); }
       100% { transform: translateY(110vh) rotate(360deg); }
     }
 
     @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(26px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(26px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes softFloat {
@@ -73,28 +87,36 @@
       50% { transform: translateY(-8px); }
     }
 
-    .intro-screen {
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 rgba(255,127,115,0.0); }
+      50% { box-shadow: 0 0 30px rgba(255,127,115,0.18); }
+    }
+
+    .intro-screen,
+    .ending-screen {
       position: fixed;
       inset: 0;
-      z-index: 20;
+      z-index: 30;
       display: flex;
       align-items: center;
       justify-content: center;
       background:
-        radial-gradient(circle at center, rgba(255,255,255,0.2), transparent 35%),
+        radial-gradient(circle at center, rgba(255,255,255,0.18), transparent 35%),
         linear-gradient(135deg, rgba(255,244,242,0.96), rgba(255,233,228,0.98));
       backdrop-filter: blur(8px);
       transition: opacity 0.8s ease, visibility 0.8s ease;
     }
 
-    .intro-screen.hidden {
+    .intro-screen.hidden,
+    .ending-screen.hidden {
       opacity: 0;
       visibility: hidden;
     }
 
-    .intro-card {
-      width: min(92vw, 640px);
-      background: rgba(255,255,255,0.82);
+    .intro-card,
+    .ending-card {
+      width: min(92vw, 700px);
+      background: rgba(255,255,255,0.84);
       border: 1px solid var(--border);
       border-radius: 34px;
       box-shadow: 0 18px 50px rgba(255, 127, 115, 0.2);
@@ -103,7 +125,8 @@
       animation: fadeUp 1s ease;
     }
 
-    .intro-mini {
+    .intro-mini,
+    .ending-mini {
       display: inline-block;
       padding: 8px 14px;
       border-radius: 999px;
@@ -114,16 +137,21 @@
       box-shadow: var(--shadow);
     }
 
-    .intro-card h1 {
+    .intro-card h1,
+    .ending-card h2,
+    .hero h1 {
       margin: 0;
-      font-size: clamp(2rem, 5vw, 3.4rem);
       color: var(--deep);
       line-height: 1.15;
     }
 
-    .intro-card p {
+    .intro-card h1 { font-size: clamp(2rem, 5vw, 3.4rem); }
+    .ending-card h2 { font-size: clamp(2rem, 4.5vw, 3rem); }
+
+    .intro-card p,
+    .ending-card p {
       margin: 16px auto 0;
-      max-width: 500px;
+      max-width: 540px;
       line-height: 1.75;
       color: #7b4b47;
       font-size: 1rem;
@@ -132,7 +160,9 @@
     .open-btn,
     .song button,
     .controls button,
-    .reveal-btn {
+    .reveal-btn,
+    .final-btn,
+    .ending-close-btn {
       border: none;
       background: linear-gradient(135deg, var(--coral3), var(--coral2));
       color: white;
@@ -147,12 +177,15 @@
     .open-btn:hover,
     .song button:hover,
     .controls button:hover,
-    .reveal-btn:hover {
+    .reveal-btn:hover,
+    .final-btn:hover,
+    .ending-close-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 26px rgba(255,127,115,0.3);
     }
 
-    .intro-actions {
+    .intro-actions,
+    .ending-actions {
       margin-top: 22px;
       display: flex;
       justify-content: center;
@@ -162,7 +195,7 @@
 
     .wrap {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       max-width: 1200px;
       margin: 0 auto;
       padding: 24px 20px 60px;
@@ -201,12 +234,7 @@
       margin-bottom: 16px;
     }
 
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(2.2rem, 5vw, 4rem);
-      color: var(--deep);
-      letter-spacing: 0.5px;
-    }
+    .hero h1 { font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: 0.5px; }
 
     .subtitle {
       max-width: 760px;
@@ -225,12 +253,23 @@
       transition-delay: 0.16s;
     }
 
-    .message-card {
+    .message-card,
+    .memory-card,
+    .appreciation-card,
+    .song,
+    .section,
+    .letter-paper,
+    .reveal-card,
+    .flower-note-box {
       background: var(--card);
       backdrop-filter: blur(10px);
       border: 1px solid var(--border);
-      border-radius: 24px;
       box-shadow: var(--shadow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .message-card {
+      border-radius: 24px;
       padding: 18px;
       min-height: 120px;
       display: flex;
@@ -239,14 +278,16 @@
       text-align: center;
       line-height: 1.65;
       font-size: 0.98rem;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .message-card:hover,
+    .memory-card:hover,
+    .appreciation-card:hover,
     .song:hover,
     .section:hover,
     .letter-paper:hover,
-    .reveal-card:hover {
+    .reveal-card:hover,
+    .flower-note-box:hover {
       transform: translateY(-5px);
       box-shadow: 0 16px 36px rgba(255, 127, 115, 0.22);
     }
@@ -299,14 +340,25 @@
       z-index: 1;
     }
 
+    .flower-hit {
+      cursor: pointer;
+      transition: transform 0.25s ease, filter 0.25s ease;
+      transform-origin: center;
+    }
+
+    .flower-hit:hover {
+      transform: scale(1.06);
+      filter: drop-shadow(0 0 8px rgba(255,127,115,0.35));
+    }
+
+    .flower-hit.active {
+      filter: drop-shadow(0 0 10px rgba(255,127,115,0.5));
+    }
+
     .section {
       margin-top: 36px;
-      background: rgba(255,255,255,0.64);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
       border-radius: 28px;
       padding: 24px;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .section h2 {
@@ -320,18 +372,84 @@
       line-height: 1.7;
     }
 
-    .letter-section { transition-delay: 0.24s; }
-    .playlist-section { transition-delay: 0.32s; }
+    .flower-section { transition-delay: 0.2s; }
+    .memory-section { transition-delay: 0.24s; }
+    .appreciation-section { transition-delay: 0.28s; }
+    .letter-section { transition-delay: 0.32s; }
+    .playlist-section { transition-delay: 0.36s; }
     .reveal-section { transition-delay: 0.4s; }
+    .final-section { transition-delay: 0.44s; }
+
+    .flower-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      align-items: start;
+      margin-top: 16px;
+    }
+
+    .flower-note-box {
+      border-radius: 22px;
+      padding: 20px;
+      min-height: 220px;
+      animation: pulseGlow 3.8s ease-in-out infinite;
+    }
+
+    .flower-note-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--deep);
+      margin-bottom: 10px;
+    }
+
+    .flower-note-text {
+      line-height: 1.8;
+      color: #6f4742;
+      white-space: pre-line;
+    }
+
+    .memory-grid,
+    .appreciation-grid,
+    .playlist {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .memory-card,
+    .appreciation-card,
+    .song {
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .memory-step,
+    .appreciation-title,
+    .song-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #6f3655;
+    }
+
+    .memory-step {
+      font-size: 0.95rem;
+      color: var(--coral3);
+    }
+
+    .memory-text,
+    .appreciation-text,
+    .song-note {
+      color: #7a5568;
+      line-height: 1.6;
+      font-size: 0.96rem;
+    }
 
     .letter-paper {
       margin-top: 16px;
       background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,248,245,0.95));
-      border: 1px solid rgba(255,127,115,0.14);
       border-radius: 24px;
       padding: 26px;
-      box-shadow: var(--shadow);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .letter-top {
@@ -349,6 +467,7 @@
       color: #6f4742;
       font-size: 1rem;
       white-space: pre-line;
+      min-height: 220px;
     }
 
     .signature {
@@ -357,37 +476,9 @@
       font-weight: 600;
     }
 
-    .playlist {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    .song {
-      background: rgba(255,255,255,0.84);
-      padding: 16px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,127,115,0.15);
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    }
-
     .song.active {
       border-color: var(--coral3);
       box-shadow: 0 14px 30px rgba(255,127,115,0.25);
-    }
-
-    .song-title {
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: #6f3655;
-    }
-
-    .song-note {
-      font-size: 0.95rem;
-      color: #7a5568;
-      line-height: 1.5;
-      min-height: 48px;
     }
 
     .controls {
@@ -415,11 +506,8 @@
       width: 100%;
       display: none;
       background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,243,239,0.97));
-      border: 1px solid rgba(255,127,115,0.18);
       border-radius: 24px;
       padding: 24px;
-      box-shadow: var(--shadow);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .reveal-card.show {
@@ -440,6 +528,15 @@
       white-space: pre-line;
     }
 
+    .final-box {
+      margin-top: 18px;
+      padding: 22px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(255,244,240,0.96));
+      border: 1px solid rgba(255,127,115,0.18);
+      box-shadow: var(--shadow);
+    }
+
     .footer-note {
       text-align: center;
       margin-top: 28px;
@@ -448,33 +545,39 @@
       transition-delay: 0.48s;
     }
 
-    @media (max-width: 900px) {
-      .scene {
+    @media (max-width: 980px) {
+      .scene,
+      .flower-layout {
         grid-template-columns: 1fr;
       }
 
-      .bouquet-panel {
-        order: -1;
-      }
-
-      .letter-top {
-        flex-direction: column;
-      }
+      .bouquet-panel { order: -1; }
+      .letter-top { flex-direction: column; }
     }
   </style>
 </head>
 <body>
   <div class="floating-petals" id="petals"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
 
   <div class="intro-screen" id="introScreen">
     <div class="intro-card">
-      <div class="intro-mini">🌸 Flowers Day surprise</div>
+      <div class="intro-mini">🌸 A little corner of the internet made just for you</div>
       <h1>[PLACEHOLDER INTRO TITLE]</h1>
-      <p>
-        [PLACEHOLDER INTRO TEXT — Write a short inviting line here, something like a warm one-paragraph teaser before the surprise opens. Keep it sweet, personal, and a little special.]
-      </p>
+      <p>[PLACEHOLDER INTRO TEXT — A warm lock-screen style invitation. Something like: open only if you’re ready for flowers, memories, and a few feelings.]</p>
       <div class="intro-actions">
         <button class="open-btn" id="openSurpriseBtn">Open your bouquet ✨</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ending-screen hidden" id="endingScreen">
+    <div class="ending-card">
+      <div class="ending-mini">🌷 One last flower for you</div>
+      <h2>[PLACEHOLDER FINAL SCREEN TITLE]</h2>
+      <p>[PLACEHOLDER FINAL SCREEN TEXT — This should be the cinematic final line of the whole page. Keep it short, warm, and memorable.]</p>
+      <div class="ending-actions">
+        <button class="ending-close-btn" id="endingCloseBtn">Back to the page</button>
       </div>
     </div>
   </div>
@@ -483,9 +586,7 @@
     <section class="hero">
       <div class="badge">🌷 Flowers Day surprise page</div>
       <h1>[PLACEHOLDER MAIN HEADING]</h1>
-      <p class="subtitle">
-        [PLACEHOLDER SUBTITLE — Add a one or two line description here about your friendship, the flowers, the playlist, or how this page is your little way of making her smile.]
-      </p>
+      <p class="subtitle">[PLACEHOLDER SUBTITLE — Add a soft one or two line intro to the whole page.]</p>
     </section>
 
     <section class="scene">
@@ -526,7 +627,7 @@
             <path d="M170 317 C158 300, 150 300, 154 318 C158 330, 168 329, 170 317Z" fill="#ffc5bb"/>
             <path d="M230 317 C242 300, 250 300, 246 318 C242 330, 232 329, 230 317Z" fill="#ffc5bb"/>
 
-            <g>
+            <g class="flower-hit" data-title="[PLACEHOLDER FLOWER TITLE 1]" data-message="[PLACEHOLDER FLOWER MESSAGE 1 — Write the little meaning of this flower here.]">
               <g transform="translate(110 170)">
                 <circle r="13" fill="#ffd166"/>
                 <ellipse rx="14" ry="26" fill="#ff9f91" transform="rotate(0) translate(0 -24)"/>
@@ -535,7 +636,9 @@
                 <ellipse rx="14" ry="26" fill="#ff9f91" transform="rotate(216) translate(0 -24)"/>
                 <ellipse rx="14" ry="26" fill="#ff9f91" transform="rotate(288) translate(0 -24)"/>
               </g>
+            </g>
 
+            <g class="flower-hit" data-title="[PLACEHOLDER FLOWER TITLE 2]" data-message="[PLACEHOLDER FLOWER MESSAGE 2 — Add another tiny hidden meaning here.]">
               <g transform="translate(150 130)">
                 <circle r="12" fill="#ffd166"/>
                 <ellipse rx="13" ry="24" fill="#ffd1c9" transform="rotate(0) translate(0 -22)"/>
@@ -543,7 +646,9 @@
                 <ellipse rx="13" ry="24" fill="#ffd1c9" transform="rotate(180) translate(0 -22)"/>
                 <ellipse rx="13" ry="24" fill="#ffd1c9" transform="rotate(270) translate(0 -22)"/>
               </g>
+            </g>
 
+            <g class="flower-hit" data-title="[PLACEHOLDER FLOWER TITLE 3]" data-message="[PLACEHOLDER FLOWER MESSAGE 3 — Use this for the most emotional flower note.]">
               <g transform="translate(200 120)">
                 <circle r="11" fill="#ffe08a"/>
                 <ellipse rx="16" ry="28" fill="#ff7f73" transform="rotate(0) translate(0 -22)"/>
@@ -553,7 +658,9 @@
                 <ellipse rx="16" ry="28" fill="#ff7f73" transform="rotate(240) translate(0 -22)"/>
                 <ellipse rx="16" ry="28" fill="#ff7f73" transform="rotate(300) translate(0 -22)"/>
               </g>
+            </g>
 
+            <g class="flower-hit" data-title="[PLACEHOLDER FLOWER TITLE 4]" data-message="[PLACEHOLDER FLOWER MESSAGE 4 — Add a calm, soft, or funny note.]">
               <g transform="translate(250 135)">
                 <circle r="12" fill="#f4a261"/>
                 <ellipse rx="13" ry="25" fill="#fff1d8" transform="rotate(0) translate(0 -23)"/>
@@ -562,7 +669,9 @@
                 <ellipse rx="13" ry="25" fill="#fff1d8" transform="rotate(216) translate(0 -23)"/>
                 <ellipse rx="13" ry="25" fill="#fff1d8" transform="rotate(288) translate(0 -23)"/>
               </g>
+            </g>
 
+            <g class="flower-hit" data-title="[PLACEHOLDER FLOWER TITLE 5]" data-message="[PLACEHOLDER FLOWER MESSAGE 5 — Add your last bouquet secret here.]">
               <g transform="translate(295 175)">
                 <circle r="11" fill="#ffd166"/>
                 <ellipse rx="12" ry="22" fill="#ffc5bb" transform="rotate(0) translate(0 -20)"/>
@@ -570,106 +679,155 @@
                 <ellipse rx="12" ry="22" fill="#ffc5bb" transform="rotate(180) translate(0 -20)"/>
                 <ellipse rx="12" ry="22" fill="#ffc5bb" transform="rotate(270) translate(0 -20)"/>
               </g>
+            </g>
 
-              <g transform="translate(130 215)">
-                <circle r="9" fill="#ffd166"/>
-                <ellipse rx="10" ry="18" fill="#ffd1c9" transform="rotate(0) translate(0 -16)"/>
-                <ellipse rx="10" ry="18" fill="#ffd1c9" transform="rotate(120) translate(0 -16)"/>
-                <ellipse rx="10" ry="18" fill="#ffd1c9" transform="rotate(240) translate(0 -16)"/>
-              </g>
-              <g transform="translate(270 215)">
-                <circle r="9" fill="#ffd166"/>
-                <ellipse rx="10" ry="18" fill="#ffb4a8" transform="rotate(0) translate(0 -16)"/>
-                <ellipse rx="10" ry="18" fill="#ffb4a8" transform="rotate(120) translate(0 -16)"/>
-                <ellipse rx="10" ry="18" fill="#ffb4a8" transform="rotate(240) translate(0 -16)"/>
-              </g>
+            <g transform="translate(130 215)">
+              <circle r="9" fill="#ffd166"/>
+              <ellipse rx="10" ry="18" fill="#ffd1c9" transform="rotate(0) translate(0 -16)"/>
+              <ellipse rx="10" ry="18" fill="#ffd1c9" transform="rotate(120) translate(0 -16)"/>
+              <ellipse rx="10" ry="18" fill="#ffd1c9" transform="rotate(240) translate(0 -16)"/>
+            </g>
+            <g transform="translate(270 215)">
+              <circle r="9" fill="#ffd166"/>
+              <ellipse rx="10" ry="18" fill="#ffb4a8" transform="rotate(0) translate(0 -16)"/>
+              <ellipse rx="10" ry="18" fill="#ffb4a8" transform="rotate(120) translate(0 -16)"/>
+              <ellipse rx="10" ry="18" fill="#ffb4a8" transform="rotate(240) translate(0 -16)"/>
             </g>
           </svg>
         </div>
       </div>
       <div class="message-card">[PLACEHOLDER MESSAGE CARD 2]</div>
-
       <div class="message-card">[PLACEHOLDER MESSAGE CARD 3]</div>
       <div class="message-card">[PLACEHOLDER MESSAGE CARD 4]</div>
       <div class="message-card">[PLACEHOLDER MESSAGE CARD 5]</div>
     </section>
 
+    <section class="section flower-section">
+      <h2>Pick a flower 🌸</h2>
+      <p>[PLACEHOLDER FLOWER SECTION INTRO — Invite her to click the bouquet flowers to reveal the tiny meanings behind them.]</p>
+      <div class="flower-layout">
+        <div class="flower-note-box">
+          <div class="flower-note-title" id="flowerNoteTitle">[PLACEHOLDER DEFAULT FLOWER TITLE]</div>
+          <div class="flower-note-text" id="flowerNoteText">[PLACEHOLDER DEFAULT FLOWER NOTE — This is what shows before any flower is clicked.]</div>
+        </div>
+        <div class="flower-note-box">
+          <div class="flower-note-title">[PLACEHOLDER SMALL SIDE TITLE]</div>
+          <div class="flower-note-text">[PLACEHOLDER SMALL SIDE NOTE — You can use this as a tiny explanation of why flowers felt like the right gift for this page.]</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section memory-section">
+      <h2>Memory lane</h2>
+      <p>[PLACEHOLDER MEMORY INTRO — A short line introducing the little timeline of your friendship.]</p>
+      <div class="memory-grid">
+        <div class="memory-card">
+          <div class="memory-step">Step 01</div>
+          <div class="memory-text">[PLACEHOLDER MEMORY 1 — How you met / first connected.]</div>
+        </div>
+        <div class="memory-card">
+          <div class="memory-step">Step 02</div>
+          <div class="memory-text">[PLACEHOLDER MEMORY 2 — When the friendship started feeling real.]</div>
+        </div>
+        <div class="memory-card">
+          <div class="memory-step">Step 03</div>
+          <div class="memory-text">[PLACEHOLDER MEMORY 3 — Your funniest phase / inside joke.]</div>
+        </div>
+        <div class="memory-card">
+          <div class="memory-step">Step 04</div>
+          <div class="memory-text">[PLACEHOLDER MEMORY 4 — A comforting or unforgettable moment.]</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section appreciation-section">
+      <h2>Reasons I appreciate you</h2>
+      <p>[PLACEHOLDER APPRECIATION INTRO — A soft lead-in to this section.]</p>
+      <div class="appreciation-grid">
+        <div class="appreciation-card">
+          <div class="appreciation-title">[PLACEHOLDER QUALITY 1]</div>
+          <div class="appreciation-text">[PLACEHOLDER QUALITY TEXT 1]</div>
+        </div>
+        <div class="appreciation-card">
+          <div class="appreciation-title">[PLACEHOLDER QUALITY 2]</div>
+          <div class="appreciation-text">[PLACEHOLDER QUALITY TEXT 2]</div>
+        </div>
+        <div class="appreciation-card">
+          <div class="appreciation-title">[PLACEHOLDER QUALITY 3]</div>
+          <div class="appreciation-text">[PLACEHOLDER QUALITY TEXT 3]</div>
+        </div>
+        <div class="appreciation-card">
+          <div class="appreciation-title">[PLACEHOLDER QUALITY 4]</div>
+          <div class="appreciation-text">[PLACEHOLDER QUALITY TEXT 4]</div>
+        </div>
+      </div>
+    </section>
+
     <section class="section letter-section">
       <h2>My letter to you</h2>
-      <p>[PLACEHOLDER LETTER INTRO — Add one short line here to introduce the letter section.]</p>
-
+      <p>[PLACEHOLDER LETTER INTRO — Add one short line to introduce the letter.]</p>
       <div class="letter-paper">
         <div class="letter-top">
           <span>To: [PLACEHOLDER NAME / NICKNAME]</span>
           <span>From: [PLACEHOLDER YOUR NAME / NICKNAME]</span>
         </div>
-
-        <div class="letter-body">[PLACEHOLDER LETTER BODY —
-Write your heartfelt note here.
-
-You can keep it in 3 small paragraphs, for example:
-1. What she means to you and why you made this page.
-2. A memory / feeling / inside joke / comfort she brought you.
-3. A closing line for flowers day.
-
-Keep this personal and specific.]
-        </div>
-
+        <div class="letter-body" id="typedLetter" data-letter="[PLACEHOLDER LETTER BODY — Write the full heartfelt letter here. Keep line breaks if you want. This text will type itself out when the section comes into view.]"></div>
         <div class="signature">With affection, [PLACEHOLDER SIGN-OFF]</div>
       </div>
     </section>
 
     <section class="section playlist-section">
       <h2>Our playlist corner</h2>
-      <p>Upload your three MP3 files to the same GitHub repository and rename them exactly as written below, or edit the filenames in the code. Each card can play its own song.</p>
-
+      <p>Upload your three MP3 files to the same GitHub repository and keep their names exactly as song1.mp3, song2.mp3, and song3.mp3 unless you edit the filenames below.</p>
       <div class="playlist">
         <div class="song" data-file="song1.mp3">
           <div class="song-title">[PLACEHOLDER SONG TITLE 1]</div>
           <div class="song-note">[PLACEHOLDER SONG NOTE 1 — Why this song reminds you of her or your friendship.]</div>
           <button onclick="playSong('song1.mp3', this)">▶ Play Song 1</button>
         </div>
-
         <div class="song" data-file="song2.mp3">
           <div class="song-title">[PLACEHOLDER SONG TITLE 2]</div>
           <div class="song-note">[PLACEHOLDER SONG NOTE 2 — Add a memory, an inside joke, or a feeling here.]</div>
           <button onclick="playSong('song2.mp3', this)">▶ Play Song 2</button>
         </div>
-
         <div class="song" data-file="song3.mp3">
           <div class="song-title">[PLACEHOLDER SONG TITLE 3]</div>
           <div class="song-note">[PLACEHOLDER SONG NOTE 3 — Use this for the softest or most emotional song.]</div>
           <button onclick="playSong('song3.mp3', this)">▶ Play Song 3</button>
         </div>
       </div>
-
       <div class="controls">
         <button id="pauseBtn">⏸ Pause</button>
         <button id="resumeBtn">▶ Resume</button>
         <span class="now-playing" id="nowPlaying">No song playing yet</span>
       </div>
-
       <audio id="player"></audio>
     </section>
 
     <section class="section reveal-section">
       <h2>One more thing...</h2>
-      <p>[PLACEHOLDER REVEAL INTRO — Add a tiny teasing line here, like “There’s one last thing I wanted to leave for you.”]</p>
-
+      <p>[PLACEHOLDER REVEAL INTRO — A tiny teasing line before the hidden note.]</p>
       <div class="reveal-wrap">
         <button class="reveal-btn" id="revealBtn">Click for the hidden note 💌</button>
-
         <div class="reveal-card" id="revealCard">
           <div class="reveal-title">[PLACEHOLDER REVEAL TITLE]</div>
-          <div class="reveal-text">[PLACEHOLDER HIDDEN REVEAL TEXT —
-This should be your final emotional note.
-Keep it short, warm, and memorable.
-Something that feels like the last line of the whole page.]</div>
+          <div class="reveal-text">[PLACEHOLDER HIDDEN REVEAL TEXT — Your final hidden emotional note.]</div>
         </div>
       </div>
     </section>
 
-    <p class="footer-note">[PLACEHOLDER FOOTER LINE — A short closing sentence to end the page beautifully.]</p>
+    <section class="section final-section">
+      <h2>And finally...</h2>
+      <p>[PLACEHOLDER FINAL SECTION INTRO — Something like “there’s one last thing I wanted this page to say.”]</p>
+      <div class="final-box">
+        <p>[PLACEHOLDER FINAL BOX TEXT — A small lead-up before the cinematic ending screen.]</p>
+        <div style="margin-top:16px;">
+          <button class="final-btn" id="finalBtn">One last flower 🌷</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">[PLACEHOLDER FOOTER LINE — A short beautiful closing sentence.]</p>
   </div>
 
   <script>
@@ -685,10 +843,14 @@ Something that feels like the last line of the whole page.]</div>
       petals.appendChild(petal);
     }
 
+    const cursorGlow = document.getElementById('cursorGlow');
+    window.addEventListener('mousemove', (e) => {
+      cursorGlow.style.left = e.clientX + 'px';
+      cursorGlow.style.top = e.clientY + 'px';
+    });
+
     const introScreen = document.getElementById('introScreen');
     const openSurpriseBtn = document.getElementById('openSurpriseBtn');
-    const mainContent = document.getElementById('mainContent');
-
     openSurpriseBtn.addEventListener('click', () => {
       introScreen.classList.add('hidden');
       document.body.classList.add('page-ready');
@@ -742,15 +904,65 @@ Something that feels like the last line of the whole page.]</div>
 
     const revealBtn = document.getElementById('revealBtn');
     const revealCard = document.getElementById('revealCard');
-
     revealBtn.addEventListener('click', () => {
       revealCard.classList.toggle('show');
-      revealBtn.textContent = revealCard.classList.contains('show')
-        ? 'Hide the note ✨'
-        : 'Click for the hidden note 💌';
+      revealBtn.textContent = revealCard.classList.contains('show') ? 'Hide the note ✨' : 'Click for the hidden note 💌';
+    });
+
+    const flowerHits = document.querySelectorAll('.flower-hit');
+    const flowerNoteTitle = document.getElementById('flowerNoteTitle');
+    const flowerNoteText = document.getElementById('flowerNoteText');
+
+    flowerHits.forEach(flower => {
+      flower.addEventListener('click', () => {
+        flowerHits.forEach(item => item.classList.remove('active'));
+        flower.classList.add('active');
+        flowerNoteTitle.textContent = flower.dataset.title;
+        flowerNoteText.textContent = flower.dataset.message;
+      });
+    });
+
+    const typedLetter = document.getElementById('typedLetter');
+    const fullLetter = typedLetter.dataset.letter || '';
+    let typedStarted = false;
+
+    function typeLetter(text, element, speed = 22) {
+      let index = 0;
+      element.textContent = '';
+      const timer = setInterval(() => {
+        element.textContent += text.charAt(index);
+        index++;
+        if (index >= text.length) clearInterval(timer);
+      }, speed);
+    }
+
+    const letterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !typedStarted) {
+          typedStarted = true;
+          typeLetter(fullLetter, typedLetter);
+        }
+      });
+    }, { threshold: 0.35 });
+
+    letterObserver.observe(typedLetter);
+
+    const finalBtn = document.getElementById('finalBtn');
+    const endingScreen = document.getElementById('endingScreen');
+    const endingCloseBtn = document.getElementById('endingCloseBtn');
+
+    finalBtn.addEventListener('click', () => {
+      endingScreen.classList.remove('hidden');
+      document.body.classList.add('ending-mode');
+    });
+
+    endingCloseBtn.addEventListener('click', () => {
+      endingScreen.classList.add('hidden');
+      document.body.classList.remove('ending-mode');
     });
   </script>
 </body>
 </html>
+
 
 
