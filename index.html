@@ -13,12 +13,13 @@
       --coral3: #ff7f73;
       --deep: #8f4a45;
       --gold: #ffd6a5;
-      --card: rgba(255,255,255,0.76);
+      --card: rgba(255,255,255,0.78);
       --shadow: 0 10px 30px rgba(255, 127, 115, 0.18);
-      --border: rgba(255,255,255,0.8);
+      --border: rgba(255,255,255,0.82);
     }
 
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -56,6 +57,109 @@
       100% { transform: translateY(110vh) rotate(360deg); }
     }
 
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(26px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes softFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .intro-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,0.2), transparent 35%),
+        linear-gradient(135deg, rgba(255,244,242,0.96), rgba(255,233,228,0.98));
+      backdrop-filter: blur(8px);
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    .intro-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .intro-card {
+      width: min(92vw, 640px);
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--border);
+      border-radius: 34px;
+      box-shadow: 0 18px 50px rgba(255, 127, 115, 0.2);
+      padding: 34px 28px;
+      text-align: center;
+      animation: fadeUp 1s ease;
+    }
+
+    .intro-mini {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.95);
+      color: var(--deep);
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .intro-card h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      color: var(--deep);
+      line-height: 1.15;
+    }
+
+    .intro-card p {
+      margin: 16px auto 0;
+      max-width: 500px;
+      line-height: 1.75;
+      color: #7b4b47;
+      font-size: 1rem;
+    }
+
+    .open-btn,
+    .song button,
+    .controls button,
+    .reveal-btn {
+      border: none;
+      background: linear-gradient(135deg, var(--coral3), var(--coral2));
+      color: white;
+      padding: 13px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(255,127,115,0.25);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .open-btn:hover,
+    .song button:hover,
+    .controls button:hover,
+    .reveal-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(255,127,115,0.3);
+    }
+
+    .intro-actions {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
     .wrap {
       position: relative;
       z-index: 1;
@@ -64,9 +168,27 @@
       padding: 24px 20px 60px;
     }
 
+    .hero,
+    .scene,
+    .section,
+    .footer-note {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .page-ready .hero,
+    .page-ready .scene,
+    .page-ready .section,
+    .page-ready .footer-note {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .hero {
       text-align: center;
       padding-top: 18px;
+      transition-delay: 0.08s;
     }
 
     .badge {
@@ -79,7 +201,7 @@
       margin-bottom: 16px;
     }
 
-    h1 {
+    .hero h1 {
       margin: 0;
       font-size: clamp(2.2rem, 5vw, 4rem);
       color: var(--deep);
@@ -100,6 +222,7 @@
       grid-template-columns: repeat(3, minmax(220px, 1fr));
       gap: 22px;
       align-items: center;
+      transition-delay: 0.16s;
     }
 
     .message-card {
@@ -121,7 +244,9 @@
 
     .message-card:hover,
     .song:hover,
-    .section:hover {
+    .section:hover,
+    .letter-paper:hover,
+    .reveal-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 16px 36px rgba(255, 127, 115, 0.22);
     }
@@ -145,6 +270,7 @@
       backdrop-filter: blur(10px);
       position: relative;
       overflow: hidden;
+      animation: softFloat 4.5s ease-in-out infinite;
     }
 
     .bouquet-shell::before {
@@ -194,6 +320,43 @@
       line-height: 1.7;
     }
 
+    .letter-section { transition-delay: 0.24s; }
+    .playlist-section { transition-delay: 0.32s; }
+    .reveal-section { transition-delay: 0.4s; }
+
+    .letter-paper {
+      margin-top: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,248,245,0.95));
+      border: 1px solid rgba(255,127,115,0.14);
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .letter-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      color: #9a6a5f;
+      font-size: 0.95rem;
+    }
+
+    .letter-body {
+      line-height: 2;
+      color: #6f4742;
+      font-size: 1rem;
+      white-space: pre-line;
+    }
+
+    .signature {
+      margin-top: 18px;
+      color: #8b5a56;
+      font-weight: 600;
+    }
+
     .playlist {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -227,19 +390,6 @@
       min-height: 48px;
     }
 
-    .song button,
-    .controls button {
-      border: none;
-      background: linear-gradient(135deg, var(--coral3), var(--coral2));
-      color: white;
-      padding: 11px 16px;
-      border-radius: 999px;
-      cursor: pointer;
-      font-weight: 700;
-      box-shadow: 0 8px 20px rgba(255,127,115,0.25);
-      margin-top: 10px;
-    }
-
     .controls {
       margin-top: 18px;
       display: flex;
@@ -253,11 +403,49 @@
       color: #875f73;
     }
 
+    .reveal-wrap {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .reveal-card {
+      width: 100%;
+      display: none;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,243,239,0.97));
+      border: 1px solid rgba(255,127,115,0.18);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .reveal-card.show {
+      display: block;
+      animation: fadeUp 0.8s ease;
+    }
+
+    .reveal-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--deep);
+      margin-bottom: 10px;
+    }
+
+    .reveal-text {
+      line-height: 1.85;
+      color: #6f4742;
+      white-space: pre-line;
+    }
+
     .footer-note {
       text-align: center;
       margin-top: 28px;
       color: #8b6075;
       font-size: 0.95rem;
+      transition-delay: 0.48s;
     }
 
     @media (max-width: 900px) {
@@ -268,23 +456,40 @@
       .bouquet-panel {
         order: -1;
       }
+
+      .letter-top {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
   <div class="floating-petals" id="petals"></div>
 
-  <div class="wrap">
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-card">
+      <div class="intro-mini">🌸 Flowers Day surprise</div>
+      <h1>[PLACEHOLDER INTRO TITLE]</h1>
+      <p>
+        [PLACEHOLDER INTRO TEXT — Write a short inviting line here, something like a warm one-paragraph teaser before the surprise opens. Keep it sweet, personal, and a little special.]
+      </p>
+      <div class="intro-actions">
+        <button class="open-btn" id="openSurpriseBtn">Open your bouquet ✨</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap" id="mainContent">
     <section class="hero">
       <div class="badge">🌷 Flowers Day surprise page</div>
-      <h1>For My Favorite Human Across the Screen</h1>
+      <h1>[PLACEHOLDER MAIN HEADING]</h1>
       <p class="subtitle">
-        A tiny flower garden made out of memories, laughter, playlists, and all the little moments that made our friendship special.
+        [PLACEHOLDER SUBTITLE — Add a one or two line description here about your friendship, the flowers, the playlist, or how this page is your little way of making her smile.]
       </p>
     </section>
 
     <section class="scene">
-      <div class="message-card">You turned ordinary chats into the best part of my day.</div>
+      <div class="message-card">[PLACEHOLDER MESSAGE CARD 1]</div>
       <div class="bouquet-panel">
         <div class="bouquet-shell">
           <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-label="flower bouquet">
@@ -382,40 +587,58 @@
           </svg>
         </div>
       </div>
-      <div class="message-card">No matter how many kilometers away you are, you somehow still feel close.</div>
+      <div class="message-card">[PLACEHOLDER MESSAGE CARD 2]</div>
 
-      <div class="message-card">Thank you for being part comfort place, part chaos, and fully unforgettable.</div>
-      <div class="message-card">Some friendships are just messages. Ours became memories.</div>
-      <div class="message-card">This bouquet is small, but the affection behind it is huge.</div>
+      <div class="message-card">[PLACEHOLDER MESSAGE CARD 3]</div>
+      <div class="message-card">[PLACEHOLDER MESSAGE CARD 4]</div>
+      <div class="message-card">[PLACEHOLDER MESSAGE CARD 5]</div>
     </section>
 
-    <section class="section">
-      <h2>Little things I wanted you to know</h2>
-      <p>
-        You have been one of the kindest, funniest, and most comforting people in my life. Even through a screen, you managed to make things feel lighter. This page is just my way of sending you flowers that never wilt.
-      </p>
+    <section class="section letter-section">
+      <h2>My letter to you</h2>
+      <p>[PLACEHOLDER LETTER INTRO — Add one short line here to introduce the letter section.]</p>
+
+      <div class="letter-paper">
+        <div class="letter-top">
+          <span>To: [PLACEHOLDER NAME / NICKNAME]</span>
+          <span>From: [PLACEHOLDER YOUR NAME / NICKNAME]</span>
+        </div>
+
+        <div class="letter-body">[PLACEHOLDER LETTER BODY —
+Write your heartfelt note here.
+
+You can keep it in 3 small paragraphs, for example:
+1. What she means to you and why you made this page.
+2. A memory / feeling / inside joke / comfort she brought you.
+3. A closing line for flowers day.
+
+Keep this personal and specific.]
+        </div>
+
+        <div class="signature">With affection, [PLACEHOLDER SIGN-OFF]</div>
+      </div>
     </section>
 
-    <section class="section">
+    <section class="section playlist-section">
       <h2>Our playlist corner</h2>
       <p>Upload your three MP3 files to the same GitHub repository and rename them exactly as written below, or edit the filenames in the code. Each card can play its own song.</p>
 
       <div class="playlist">
         <div class="song" data-file="song1.mp3">
-          <div class="song-title">Song 1</div>
-          <div class="song-note">Replace this with the first song and why it reminds you of your friendship.</div>
+          <div class="song-title">[PLACEHOLDER SONG TITLE 1]</div>
+          <div class="song-note">[PLACEHOLDER SONG NOTE 1 — Why this song reminds you of her or your friendship.]</div>
           <button onclick="playSong('song1.mp3', this)">▶ Play Song 1</button>
         </div>
 
         <div class="song" data-file="song2.mp3">
-          <div class="song-title">Song 2</div>
-          <div class="song-note">Replace this with another meaningful song, memory, or inside joke.</div>
+          <div class="song-title">[PLACEHOLDER SONG TITLE 2]</div>
+          <div class="song-note">[PLACEHOLDER SONG NOTE 2 — Add a memory, an inside joke, or a feeling here.]</div>
           <button onclick="playSong('song2.mp3', this)">▶ Play Song 2</button>
         </div>
 
         <div class="song" data-file="song3.mp3">
-          <div class="song-title">Song 3</div>
-          <div class="song-note">Use this for a soft ending song, comfort song, or her favorite vibe.</div>
+          <div class="song-title">[PLACEHOLDER SONG TITLE 3]</div>
+          <div class="song-note">[PLACEHOLDER SONG NOTE 3 — Use this for the softest or most emotional song.]</div>
           <button onclick="playSong('song3.mp3', this)">▶ Play Song 3</button>
         </div>
       </div>
@@ -429,7 +652,24 @@
       <audio id="player"></audio>
     </section>
 
-    <p class="footer-note">Made with flowers, pixels, playlists, and a lot of appreciation 🌸</p>
+    <section class="section reveal-section">
+      <h2>One more thing...</h2>
+      <p>[PLACEHOLDER REVEAL INTRO — Add a tiny teasing line here, like “There’s one last thing I wanted to leave for you.”]</p>
+
+      <div class="reveal-wrap">
+        <button class="reveal-btn" id="revealBtn">Click for the hidden note 💌</button>
+
+        <div class="reveal-card" id="revealCard">
+          <div class="reveal-title">[PLACEHOLDER REVEAL TITLE]</div>
+          <div class="reveal-text">[PLACEHOLDER HIDDEN REVEAL TEXT —
+This should be your final emotional note.
+Keep it short, warm, and memorable.
+Something that feels like the last line of the whole page.]</div>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">[PLACEHOLDER FOOTER LINE — A short closing sentence to end the page beautifully.]</p>
   </div>
 
   <script>
@@ -444,6 +684,15 @@
       petal.style.transform = `scale(${0.7 + Math.random()})`;
       petals.appendChild(petal);
     }
+
+    const introScreen = document.getElementById('introScreen');
+    const openSurpriseBtn = document.getElementById('openSurpriseBtn');
+    const mainContent = document.getElementById('mainContent');
+
+    openSurpriseBtn.addEventListener('click', () => {
+      introScreen.classList.add('hidden');
+      document.body.classList.add('page-ready');
+    });
 
     const player = document.getElementById('player');
     const nowPlaying = document.getElementById('nowPlaying');
@@ -490,7 +739,18 @@
       clearActive();
       nowPlaying.textContent = 'No song playing right now';
     });
+
+    const revealBtn = document.getElementById('revealBtn');
+    const revealCard = document.getElementById('revealCard');
+
+    revealBtn.addEventListener('click', () => {
+      revealCard.classList.toggle('show');
+      revealBtn.textContent = revealCard.classList.contains('show')
+        ? 'Hide the note ✨'
+        : 'Click for the hidden note 💌';
+    });
   </script>
 </body>
 </html>
+
 
